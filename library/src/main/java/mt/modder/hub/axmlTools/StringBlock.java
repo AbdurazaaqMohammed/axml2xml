@@ -35,7 +35,11 @@
 
 package mt.modder.hub.axmlTools;
 
+import android.os.Build;
+
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -248,10 +252,16 @@ public class StringBlock {
         int offset = stringOffsets[index];
         int length = getStringLength(strings, offset);
         int lengthFieldSize = offset + getLengthFieldSize(strings, offset);
-        Charset charset = this.isUTF8 ? StandardCharsets.UTF_8 : StandardCharsets.UTF_16LE;
+        Charset charset = Charset.forName(this.isUTF8 ? "UTF-8" : "UTF-16LE");
         if (!this.isUTF8) {
             length <<= 1;
         }
-        return new String(getByteArray(strings, lengthFieldSize, length), 0, length, charset);
-	}
+
+        try {
+            return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) ? new String(getByteArray(strings, lengthFieldSize, length), 0, length, charset) :
+                    charset.newDecoder().decode(ByteBuffer.wrap(getByteArray(strings, lengthFieldSize, length), 0, length)).toString();
+        } catch (CharacterCodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

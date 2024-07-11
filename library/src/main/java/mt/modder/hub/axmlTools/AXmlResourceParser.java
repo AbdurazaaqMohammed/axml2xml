@@ -42,7 +42,7 @@ import mt.modder.hub.axmlTools.utils.TypedValue;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-public class AXmlResourceParser implements XmlResourceParser, AutoCloseable {
+public class AXmlResourceParser implements XmlResourceParser {
     
 	// constant values representing different xml chunk types
     private static final int CHUNK_AXML_FILE = 524291;
@@ -90,7 +90,7 @@ public class AXmlResourceParser implements XmlResourceParser, AutoCloseable {
         }
 		
         // finds a prefix or URI in the stack
-        private final int find(int prefixOrUri, boolean prefix) {
+        private int find(int prefixOrUri, boolean prefix) {
             if (mDataLength == 0) {
                 return -1;
             }
@@ -116,7 +116,7 @@ public class AXmlResourceParser implements XmlResourceParser, AutoCloseable {
 		
 		//retrive a prefix or URI at a specific index
 
-        private final int get(int index, boolean prefix) {
+        private int get(int index, boolean prefix) {
             if (mDataLength == 0 || index < 0) {
                 return -1;
             }
@@ -138,7 +138,7 @@ public class AXmlResourceParser implements XmlResourceParser, AutoCloseable {
         }
 		
 		// decreases the depth of the namespace stack
-        public final void decreaseDepth() {
+        public void decreaseDepth() {
             if (mDataLength == 0) {
                 return;
             }
@@ -163,7 +163,7 @@ public class AXmlResourceParser implements XmlResourceParser, AutoCloseable {
         }
 		
 		// gets the accumulated count of namespace at a given depth
-        public final int getAccumulatedCount(int depth) {
+        public int getAccumulatedCount(int depth) {
             if (mDataLength == 0 || depth < 0) {
                 return 0;
             }
@@ -181,7 +181,7 @@ public class AXmlResourceParser implements XmlResourceParser, AutoCloseable {
         }
 		
 		// gets the current count of namespaces
-        public final int getCurrentCount() {
+        public int getCurrentCount() {
             if (mDataLength == 0) {
                 return 0;
             }
@@ -200,7 +200,7 @@ public class AXmlResourceParser implements XmlResourceParser, AutoCloseable {
         }
 		
 		// gets the total counts of namespace
-        public final int getTotalCount() {
+        public int getTotalCount() {
             return this.mCount;
         }
 		
@@ -210,7 +210,7 @@ public class AXmlResourceParser implements XmlResourceParser, AutoCloseable {
         }
 		
 		// increases the depth of the namespace stack
-        public final void increaseDepth() {
+        public void increaseDepth() {
             ensureDataCapacity(2);
             int offset = mDataLength;
             mData[offset] = 0;
@@ -220,7 +220,7 @@ public class AXmlResourceParser implements XmlResourceParser, AutoCloseable {
         }
 
 		// Pops the namespace entry from the stack
-        public final boolean pop() {
+        public boolean pop() {
             if (mDataLength == 0) {
                 return false;
             }
@@ -240,7 +240,7 @@ public class AXmlResourceParser implements XmlResourceParser, AutoCloseable {
         }
 		
 		// Pops the specific prefix and URI from the stack
-        public final boolean pop(int prefix, int uri) {
+        public boolean pop(int prefix, int uri) {
             if (mDataLength == 0) {
                 return false;
             }
@@ -272,7 +272,7 @@ public class AXmlResourceParser implements XmlResourceParser, AutoCloseable {
         }
 
 		// pushes a prefix and URI onto the stack
-        public final void push(int prefix, int uri) {
+        public void push(int prefix, int uri) {
             if (mDepth == 0) {
                 increaseDepth();
             }
@@ -288,7 +288,7 @@ public class AXmlResourceParser implements XmlResourceParser, AutoCloseable {
         }
 
 		// resets the nemespace stack
-        public final void reset() {
+        public void reset() {
             this.mDataLength = 0;
             this.mCount = 0;
             this.mDepth = 0;
@@ -784,7 +784,7 @@ public class AXmlResourceParser implements XmlResourceParser, AutoCloseable {
     }
 
     @Override
-    public boolean isEmptyElementTag() throws XmlPullParserException {
+    public boolean isEmptyElementTag() {
         return false;
     }
 
@@ -867,7 +867,7 @@ public class AXmlResourceParser implements XmlResourceParser, AutoCloseable {
     }
 
     @Override
-    public void require(int type, String namespace, String name) throws XmlPullParserException, IOException {
+    public void require(int type, String namespace, String name) throws XmlPullParserException {
         if (type != getEventType() || ((namespace != null && !namespace.equals(getNamespace())) || (name != null && !name.equals(getName())))) {
             throw new XmlPullParserException(TYPES[type] + " is expected.", this, null);
         }
