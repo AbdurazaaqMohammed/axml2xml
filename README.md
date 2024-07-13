@@ -1,34 +1,11 @@
-# AXMLPrinter
-An Advanced Axml Printer available with proper xml style/format feature
-# What is the use of this tool
-A tool for printing out Android binary XML files (It can be Android Manifest or other resources XML files) into normal raw AXML text. It is inspired by Android4ME's axmlprinter library.
+# axml2xml
+A Java program to decompile and recompile Android binary XML files (AndroidManifest.xml and layout XML files)
 
-## What's new on it.
-There are several changes made to the code, and multiple bugs have been fixed. The following changes have been made in this AXMLPrinter library:
-- [x] Added support for translating attribute name(Customized function)
-- [x] Fixed decoding some UTF-8.
-- [x] Fixed close tag error
-- [x] Fixed indentation/tab error
-- [x] Improved speed in xml decompilation
-- [ ] Id2Name (Reading axml file according to the resource id name)
-#### Before
-<img src="https://raw.githubusercontent.com/developer-krushna/AXMLPrinter/main/before.jpg" width="240" alt="Screenshot"/>
+Based on the hard work of axml2xml by [apk-editor](https://github.com/apk-editor/aXML), [codyi96](https://github.com/codyi96/xml2axml), [hzw1199](https://github.com/hzw1199/xml2axml) and [l741589](https://github.com/l741589/xml2axml) and [AXMLPrinter](https://github.com/developer-krushna/AXMLPrinter) by developer-krushna.
 
-#### After
-<img src="https://raw.githubusercontent.com/developer-krushna/AXMLPrinter/main/after.jpg" width="240" alt="Screenshot"/>
-
-## License
-
-+ Apache License V2.0 <http://www.apache.org/licenses/LICENSE-2.0>
-
-## Contributing
-
-1. Fork repository
-2. Make changes
-3. Ensure tests pass (or hopefully adding tests!)
-4. Submit pull request/issue
-
-## Thanks
-
-+ XML Pull Parsing: <http://www.xmlpull.org/>
-+ AXMLPrinter(Android4ME)
+## Usage
+```
+java -jar aXML.jar d[ecode] input_file output_file
+java -jar aXML.jar e[ncode] input_file output_file
+```
+* Optional argument: -am (For APK files, decode AndroidManifest.xml from APK file immediately instead of listing all XML files)
