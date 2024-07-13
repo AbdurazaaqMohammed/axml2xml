@@ -5,7 +5,7 @@ Based on the hard work of axml2xml by [apk-editor](https://github.com/apk-editor
 
 ## Usage
 ```
-java -jar aXML.jar d[ecode] input_file output_file
-java -jar aXML.jar e[ncode] input_file output_file
+java -jar axml2xml.jar d[ecode] input_file output_file
+java -jar axml2xml.jar e[ncode] input_file output_file
 ```
 * Optional argument: -am (For APK files, decode AndroidManifest.xml from APK file immediately instead of listing all XML files)
