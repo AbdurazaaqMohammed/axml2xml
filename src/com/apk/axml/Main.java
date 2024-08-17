@@ -118,9 +118,7 @@ public class Main {
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 byte[] buffer = new byte[1024];
                 int length;
-                while ((length = zipInput.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, length);
-                }
+                while ((length = zipInput.read(buffer)) != -1) outputStream.write(buffer, 0, length);
                 return new ByteArrayInputStream(outputStream.toByteArray());
             }
             zipInput.closeEntry();
@@ -173,17 +171,11 @@ public class Main {
     }
 
     private static String checkAndReplaceUselessInfo(String convertedXml) {
-        if (findText("isSplitRequired=\"true|plitTypes|AssetPack|assetpack|MissingSplit|com\\.android\\.dynamic\\.apk\\.fused\\.modules|com\\.android\\.stamp\\.source|com\\.android\\.stamp\\.type|com\\.android\\.vending\\.splits|com\\.android\\.vending\\.derived\\.apk\\.id", convertedXml)) {
-            System.out.println("Warning: Useless info (splits, assetPack, derived apk id) was detected in the manifest. These elements can cause an \"App not installed error\" on some devices, so it is recommended to remove them.");
-            System.out.print("Do you want to remove these elements now? (y/n): ");
-            try (Scanner scanner = new Scanner(System.in)) {
-                return scanner.nextLine().equalsIgnoreCase("y") ? convertedXml.replaceAll(
-                            "<[^>]*(AssetPack|assetpack|MissingSplit|com\\.android\\.dynamic\\.apk\\.fused\\.modules|com\\.android\\.stamp\\.source|com\\.android\\.stamp\\.type|com\\.android\\.vending\\.splits|com\\.android\\.vending\\.derived\\.apk\\.id)[^>]*(.*\\n.*\\n.*/(?!.*(application|manifest)).*>|.*\\n.*/(?!.*(application|manifest))>|>)", "")
+        return convertedXml.replaceAll(
+                            "<[^>]*(com\\.android\\.dynamic\\.apk\\.fused\\.modules|com\\.android\\.stamp\\.source|com\\.android\\.stamp\\.type|com\\.android\\.vending\\.splits|com\\.android\\.vending\\.derived\\.apk\\.id)[^>]*(.*\\n.*\\n.*/(?!.*(application|manifest)).*>|.*\\n.*/(?!.*(application|manifest))>|>)", "")
                             .replace("isSplitRequired=\"true", "isSplitRequired=\"false")
+                            .replaceAll("android:(splitTypes|requiredSplitTypes)=\".*\"", "")
                             .replaceAll("(splitTypes|requiredSplitTypes)=\".*\"", "")
-                            .trim() : convertedXml;
-            }
-        }
-        return convertedXml;
+                            .trim();
     }
 }
